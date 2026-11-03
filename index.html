@@ -9,16 +9,48 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Kanit', sans-serif; background: linear-gradient(135deg, #eef2f3 0%, #8e9eab 100%); min-height: 100vh; }
-    .glass { background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.5); }
-    .glass-card { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); border-radius: 1rem; border: 1px solid rgba(255, 255, 255, 0.6); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); }
+    body {
+      font-family: 'Kanit', sans-serif;
+      background: #F3EEEA;
+      color: #2D2D3F;
+      min-height: 100vh;
+    }
+    .card-fintrack {
+      background: #FFFFFF;
+      border-radius: 1.25rem;
+      border: 1px solid #EBE5E0;
+      box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05), 0 4px 10px -2px rgba(0, 0, 0, 0.02);
+      transition: all 0.2s ease-in-out;
+    }
+    .card-fintrack:hover {
+      box-shadow: 0 14px 35px -5px rgba(111, 88, 201, 0.08);
+    }
+    .btn-fintrack-primary {
+      background: linear-gradient(135deg, #6C5CE7 0%, #5A4AD1 100%);
+      color: #FFFFFF;
+      box-shadow: 0 6px 18px -2px rgba(108, 92, 231, 0.35);
+    }
+    .btn-fintrack-primary:hover {
+      background: linear-gradient(135deg, #5A4AD1 0%, #4839B9 100%);
+    }
+    .sidebar-active {
+      background: linear-gradient(135deg, #6C5CE7 0%, #5A4AD1 100%);
+      color: #FFFFFF !important;
+      box-shadow: 0 8px 20px -3px rgba(108, 92, 231, 0.4);
+    }
+    .banner-promo {
+      background: linear-gradient(135deg, #6C5CE7 0%, #8052EC 100%);
+      color: white;
+      border-radius: 1.25rem;
+    }
   </style>
 </head>
-<body class="text-slate-800">
-  <div id="loginModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-md">
-    <div class="glass-card p-8 w-full max-w-md mx-4 shadow-2xl relative border border-white/80">
+<body class="text-slate-700">
+  <!-- Login Modal -->
+  <div id="loginModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm">
+    <div class="card-fintrack p-8 w-full max-w-md mx-4 relative">
       <div class="text-center mb-6">
-        <div class="w-16 h-16 bg-blue-600 rounded-2xl mx-auto flex items-center justify-center text-white text-2xl font-bold shadow-lg shadow-blue-500/30 mb-3">
+        <div class="w-16 h-16 bg-gradient-to-tr from-purple-600 to-indigo-500 rounded-2xl mx-auto flex items-center justify-center text-white text-2xl font-bold shadow-lg shadow-indigo-500/30 mb-3">
           📊
         </div>
         <h2 class="text-2xl font-bold text-slate-800">เข้าสู่ระบบ Dashboard</h2>
@@ -27,115 +59,189 @@
 
       <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
         <div>
-          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Username</label>
-          <input type="text" id="username" required class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white/80 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all text-slate-700" placeholder="ชื่อผู้ใช้งาน">
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Username</label>
+          <input type="text" id="username" required class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all text-slate-700" placeholder="ชื่อผู้ใช้งาน">
         </div>
         <div>
-          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Password</label>
-          <input type="password" id="password" required class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white/80 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all text-slate-700" placeholder="รหัสผ่าน">
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Password</label>
+          <input type="password" id="password" required class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all text-slate-700" placeholder="รหัสผ่าน">
         </div>
-        <div id="loginError" class="text-red-500 text-xs text-center hidden font-medium py-1 bg-red-50 rounded-lg">
+        <div id="loginError" class="text-rose-500 text-xs text-center hidden font-medium py-1.5 bg-rose-50 rounded-lg border border-rose-100">
           Username หรือ Password ไม่ถูกต้อง
         </div>
-        <button type="submit" class="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/30 transition-all active:scale-[0.98]">
+        <button type="submit" class="w-full py-3.5 btn-fintrack-primary font-semibold rounded-xl transition-all active:scale-[0.98]">
           เข้าสู่ระบบ
         </button>
       </form>
     </div>
   </div>
 
+  <!-- Main App Layout -->
   <div id="app" class="hidden min-h-screen flex flex-col md:flex-row">
-    <aside class="w-full md:w-64 glass border-r border-white/40 p-5 flex flex-col justify-between shrink-0">
+    <!-- Sidebar -->
+    <aside class="w-full md:w-64 bg-white border-r border-stone-200/80 p-5 flex flex-col justify-between shrink-0">
       <div>
         <div class="flex items-center gap-3 mb-8 px-2">
-          <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold shadow-md">SW</div>
+          <div class="w-10 h-10 bg-gradient-to-tr from-purple-600 to-indigo-500 rounded-xl flex items-center justify-center text-white font-bold shadow-md">FT</div>
           <div>
-            <h1 class="font-bold text-slate-800 leading-tight">ShopWave</h1>
-            <span class="text-xs text-slate-500">Analytics & Insights</span>
+            <h1 class="font-bold text-slate-800 leading-tight text-lg">FinTrack</h1>
+            <span class="text-xs text-slate-400">Analytics & Insights</span>
           </div>
         </div>
 
-        <nav class="space-y-1">
-          <button onclick="switchTab('dashboard')" id="nav-dashboard" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all bg-blue-600 text-white shadow-md shadow-blue-500/20">
+        <nav class="space-y-1.5">
+          <button onclick="switchTab('dashboard')" id="nav-dashboard" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all sidebar-active">
             <span>📊</span> Dashboard
           </button>
-          <button onclick="switchTab('database')" id="nav-database" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-slate-600 hover:bg-white/50">
+          <button onclick="switchTab('database')" id="nav-database" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-slate-600 hover:bg-stone-100/70">
             <span>🗄️</span> ฐานข้อมูล (Data)
           </button>
-          <button onclick="switchTab('upload')" id="nav-upload" class="upload-only w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-slate-600 hover:bg-white/50">
+          <button onclick="switchTab('upload')" id="nav-upload" class="upload-only w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-slate-600 hover:bg-stone-100/70">
             <span>📤</span> อัปโหลดไฟล์ CSV
           </button>
-          <button onclick="switchTab('logs')" id="nav-logs" class="log-only w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-slate-600 hover:bg-white/50">
+          <button onclick="switchTab('logs')" id="nav-logs" class="log-only w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-slate-600 hover:bg-stone-100/70">
             <span>📜</span> Audit Logs
           </button>
-          <button onclick="switchTab('users')" id="nav-users" class="admin-only w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-slate-600 hover:bg-white/50">
+          <button onclick="switchTab('users')" id="nav-users" class="admin-only w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all text-slate-600 hover:bg-stone-100/70">
             <span>👥</span> จัดการ User
           </button>
         </nav>
       </div>
 
-      <div class="pt-4 border-t border-slate-200/60 mt-6">
-        <div class="flex items-center justify-between px-2 mb-3">
-          <div>
-            <div id="currentUserDisplay" class="font-semibold text-sm text-slate-800">-</div>
-            <div id="currentRoleDisplay" class="text-xs uppercase px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-semibold inline-block mt-0.5">-</div>
-          </div>
+      <!-- Promo Card in Sidebar -->
+      <div class="space-y-4">
+        <div class="banner-promo p-4 shadow-lg text-center relative overflow-hidden">
+          <div class="text-3xl mb-1">💡</div>
+          <h5 class="text-xs font-bold uppercase tracking-wide">Smart Dashboard</h5>
+          <p class="text-[11px] opacity-90 mt-1">วิเคราะห์ข้อมูลประชากรอย่างมีประสิทธิภาพ</p>
         </div>
-        <button onclick="handleLogout()" class="w-full py-2.5 px-4 text-sm font-medium text-red-600 hover:bg-red-50 rounded-xl transition-all border border-red-100 bg-white/50">
-          ออกจากระบบ
-        </button>
+
+        <div class="pt-4 border-t border-stone-200">
+          <div class="flex items-center justify-between px-1 mb-3">
+            <div>
+              <div id="currentUserDisplay" class="font-semibold text-sm text-slate-800">-</div>
+              <div id="currentRoleDisplay" class="text-xs uppercase px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-700 font-bold inline-block mt-0.5">-</div>
+            </div>
+          </div>
+          <button onclick="handleLogout()" class="w-full py-2.5 px-4 text-sm font-medium text-rose-600 hover:bg-rose-50 rounded-xl transition-all border border-rose-100 bg-white">
+            ออกจากระบบ
+          </button>
+        </div>
       </div>
     </aside>
 
+    <!-- Main Content Area -->
     <main class="flex-1 p-4 md:p-8 overflow-y-auto">
-      <div id="filterBanner" class="hidden mb-6 p-4 glass-card border border-blue-200/80 bg-blue-50/80 flex flex-wrap items-center justify-between gap-3 animate-fade-in">
+      <!-- Top Greetings Header -->
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">Good morning! 👋</h2>
+          <p class="text-sm text-slate-500 mt-0.5">Here's what's happening with your population data today.</p>
+        </div>
+        <div class="flex items-center gap-3 bg-white px-4 py-2 rounded-2xl border border-stone-200 shadow-sm">
+          <span class="text-xl">🔔</span>
+          <div class="w-8 h-8 rounded-full bg-purple-100 text-purple-700 font-bold flex items-center justify-center text-xs">
+            US
+          </div>
+        </div>
+      </div>
+
+      <!-- Active Cross Filter Banner -->
+      <div id="filterBanner" class="hidden mb-6 p-4 card-fintrack border-l-4 border-l-purple-500 bg-purple-50/50 flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center gap-2 flex-wrap">
-          <span class="text-sm font-bold text-blue-900 flex items-center gap-1">🔍 ฟิลเตอร์ที่เลือกอยู่:</span>
+          <span class="text-sm font-bold text-purple-900 flex items-center gap-1">🔍 ฟิลเตอร์ที่เลือกอยู่:</span>
           <div id="activeFilterBadges" class="flex flex-wrap gap-2"></div>
         </div>
-        <button onclick="resetFilters()" class="text-xs font-semibold px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow transition-all">
+        <button onclick="resetFilters()" class="text-xs font-semibold px-3 py-1.5 btn-fintrack-primary rounded-lg shadow transition-all">
           🔄 ล้างฟิลเตอร์ทั้งหมด
         </button>
       </div>
 
+      <!-- Dashboard Tab -->
       <div id="tab-dashboard" class="space-y-6">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div class="glass-card p-5 border-l-4 border-blue-500">
-            <p class="text-xs font-medium text-slate-500 uppercase">ประชากรรวม (คน)</p>
-            <h3 id="statTotal" class="text-2xl font-bold text-slate-800 mt-1">0</h3>
-            <span class="text-xs text-blue-600 font-medium">สรุปข้อมูลประชากร</span>
+        <!-- KPI Cards Grid with FinTrack 3D-style icons -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div class="card-fintrack p-5 relative overflow-hidden">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">ประชากรรวม (คน)</p>
+                <h3 id="statTotal" class="text-2xl font-bold text-slate-800 mt-1">0</h3>
+                <span class="text-xs text-emerald-600 font-semibold inline-flex items-center gap-1 mt-2">
+                  ↑ 12.5% <span class="text-slate-400 font-normal">vs ปีที่แล้ว</span>
+                </span>
+              </div>
+              <div class="w-12 h-12 rounded-2xl bg-purple-100 flex items-center justify-center text-2xl shadow-sm">
+                👛
+              </div>
+            </div>
           </div>
-          <div class="glass-card p-5 border-l-4 border-indigo-500">
-            <p class="text-xs font-medium text-slate-500 uppercase">ปีล่าสุด</p>
-            <h3 id="statYear" class="text-2xl font-bold text-slate-800 mt-1">-</h3>
-            <span class="text-xs text-indigo-600 font-medium">รอบสำรวจล่าสุด</span>
+
+          <div class="card-fintrack p-5 relative overflow-hidden">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">ปีล่าสุด</p>
+                <h3 id="statYear" class="text-2xl font-bold text-slate-800 mt-1">-</h3>
+                <span class="text-xs text-emerald-600 font-semibold inline-flex items-center gap-1 mt-2">
+                  ↑ 8.3% <span class="text-slate-400 font-normal">การเติบโต</span>
+                </span>
+              </div>
+              <div class="w-12 h-12 rounded-2xl bg-emerald-100 flex items-center justify-center text-2xl shadow-sm">
+                💰
+              </div>
+            </div>
           </div>
-          <div class="glass-card p-5 border-l-4 border-emerald-500">
-            <p class="text-xs font-medium text-slate-500 uppercase">เขตการปกครอง</p>
-            <h3 id="statRegions" class="text-2xl font-bold text-slate-800 mt-1">0</h3>
-            <span class="text-xs text-emerald-600 font-medium">ภูมิภาคที่ครอบคลุม</span>
+
+          <div class="card-fintrack p-5 relative overflow-hidden">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">เขตการปกครอง</p>
+                <h3 id="statRegions" class="text-2xl font-bold text-slate-800 mt-1">0</h3>
+                <span class="text-xs text-emerald-600 font-semibold inline-flex items-center gap-1 mt-2">
+                  ↑ 5.2% <span class="text-slate-400 font-normal">ครอบคลุม</span>
+                </span>
+              </div>
+              <div class="w-12 h-12 rounded-2xl bg-rose-100 flex items-center justify-center text-2xl shadow-sm">
+                🛍️
+              </div>
+            </div>
           </div>
-          <div class="glass-card p-5 border-l-4 border-purple-500">
-            <p class="text-xs font-medium text-slate-500 uppercase">จำนวนรายการข้อมูล</p>
-            <h3 id="statRecords" class="text-2xl font-bold text-slate-800 mt-1">0</h3>
-            <span class="text-xs text-purple-600 font-medium">แถวในระบบ</span>
+
+          <div class="card-fintrack p-5 relative overflow-hidden">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">จำนวนรายการข้อมูล</p>
+                <h3 id="statRecords" class="text-2xl font-bold text-slate-800 mt-1">0</h3>
+                <span class="text-xs text-emerald-600 font-semibold inline-flex items-center gap-1 mt-2">
+                  ↑ 15.8% <span class="text-slate-400 font-normal">บันทึกสะสม</span>
+                </span>
+              </div>
+              <div class="w-12 h-12 rounded-2xl bg-amber-100 flex items-center justify-center text-2xl shadow-sm">
+                🪙
+              </div>
+            </div>
           </div>
         </div>
 
+        <!-- Charts Grid 1 -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div class="glass-card p-5 lg:col-span-2">
+          <div class="card-fintrack p-6 lg:col-span-2">
             <div class="flex items-center justify-between mb-4">
-              <h4 class="font-bold text-slate-800">จำนวนประชากรจำแนกตามภูมิภาค</h4>
-              <span class="text-xs text-slate-400">คลิกที่แท่งกราฟเพื่อ Cross-Filter</span>
+              <div>
+                <h4 class="font-bold text-slate-800 text-base">จำนวนประชากรจำแนกตามภูมิภาค</h4>
+                <p class="text-xs text-slate-400 mt-0.5">คลิกที่แท่งกราฟเพื่อ Cross-Filter ข้อมูลทั้ง Dashboard</p>
+              </div>
             </div>
             <div class="h-72">
               <canvas id="regionChart"></canvas>
             </div>
           </div>
-          <div class="glass-card p-5">
+
+          <div class="card-fintrack p-6">
             <div class="flex items-center justify-between mb-4">
-              <h4 class="font-bold text-slate-800">สัดส่วนเพศ</h4>
-              <span class="text-xs text-slate-400">คลิกเพื่อ Filter</span>
+              <div>
+                <h4 class="font-bold text-slate-800 text-base">สัดส่วนเพศ</h4>
+                <p class="text-xs text-slate-400 mt-0.5">คลิกชิ้นสัดส่วนเพื่อ Filter</p>
+              </div>
             </div>
             <div class="h-72 flex items-center justify-center">
               <canvas id="genderChart"></canvas>
@@ -143,20 +249,26 @@
           </div>
         </div>
 
+        <!-- Charts Grid 2 -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div class="glass-card p-5">
+          <div class="card-fintrack p-6">
             <div class="flex items-center justify-between mb-4">
-              <h4 class="font-bold text-slate-800">ประชากรแบ่งตามเขตเทศบาล</h4>
-              <span class="text-xs text-slate-400">คลิกเพื่อ Filter</span>
+              <div>
+                <h4 class="font-bold text-slate-800 text-base">ประชากรแบ่งตามเขตเทศบาล</h4>
+                <p class="text-xs text-slate-400 mt-0.5">คลิกเพื่อ Filter ตามเขตเทศบาล</p>
+              </div>
             </div>
             <div class="h-64">
               <canvas id="areaChart"></canvas>
             </div>
           </div>
-          <div class="glass-card p-5">
+
+          <div class="card-fintrack p-6">
             <div class="flex items-center justify-between mb-4">
-              <h4 class="font-bold text-slate-800">กลุ่มอายุประชากร</h4>
-              <span class="text-xs text-slate-400">คลิกเพื่อ Filter</span>
+              <div>
+                <h4 class="font-bold text-slate-800 text-base">กลุ่มอายุประชากร</h4>
+                <p class="text-xs text-slate-400 mt-0.5">โครงสร้างประชากรตามช่วงอายุ</p>
+              </div>
             </div>
             <div class="h-64">
               <canvas id="ageChart"></canvas>
@@ -165,44 +277,46 @@
         </div>
       </div>
 
-      <div id="tab-database" class="hidden glass-card p-6">
+      <!-- Database Tab -->
+      <div id="tab-database" class="hidden card-fintrack p-6">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
           <div>
             <h3 class="text-lg font-bold text-slate-800">ตารางจัดการฐานข้อมูลประชากร</h3>
-            <p class="text-xs text-slate-500">สามารถแก้ไขข้อมูลได้โดยตรงตามสิทธิ์ของผู้ใช้งาน</p>
+            <p class="text-xs text-slate-400">แก้ไขข้อมูลในฐานข้อมูลตามสิทธิ์ของบทบาทผู้ใช้</p>
           </div>
           <div class="flex gap-2">
-            <input type="text" id="searchInput" oninput="renderTable()" placeholder="🔍 ค้นหาข้อมูล..." class="px-4 py-2 border rounded-xl bg-white/80 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <button id="addRecordBtn" onclick="openDataModal()" class="hidden px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-medium shadow transition-all">
+            <input type="text" id="searchInput" oninput="renderTable()" placeholder="🔍 ค้นหาข้อมูล..." class="px-4 py-2 border border-stone-200 rounded-xl bg-stone-50/50 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500">
+            <button id="addRecordBtn" onclick="openDataModal()" class="hidden px-4 py-2 btn-fintrack-primary rounded-xl text-sm font-medium shadow transition-all">
               + เพิ่มข้อมูล
             </button>
           </div>
         </div>
 
-        <div class="overflow-x-auto rounded-xl border border-slate-200/70">
+        <div class="overflow-x-auto rounded-xl border border-stone-200">
           <table class="w-full text-left text-sm text-slate-600">
-            <thead class="bg-slate-100/80 text-slate-700 uppercase text-xs font-semibold">
+            <thead class="bg-stone-100/80 text-slate-700 uppercase text-xs font-semibold">
               <tr>
-                <th class="p-3">ปี</th>
-                <th class="p-3">ภูมิภาค</th>
-                <th class="p-3">จังหวัด</th>
-                <th class="p-3">พื้นที่</th>
-                <th class="p-3">เพศ</th>
-                <th class="p-3">กลุ่มอายุ</th>
-                <th class="p-3">จำนวน (คน)</th>
-                <th class="p-3 action-col">จัดการ</th>
+                <th class="p-3.5">ปี</th>
+                <th class="p-3.5">ภูมิภาค</th>
+                <th class="p-3.5">จังหวัด</th>
+                <th class="p-3.5">พื้นที่</th>
+                <th class="p-3.5">เพศ</th>
+                <th class="p-3.5">กลุ่มอายุ</th>
+                <th class="p-3.5">จำนวน (คน)</th>
+                <th class="p-3.5 action-col">จัดการ</th>
               </tr>
             </thead>
-            <tbody id="dataTableBody" class="divide-y divide-slate-200/60 bg-white/50"></tbody>
+            <tbody id="dataTableBody" class="divide-y divide-stone-100 bg-white"></tbody>
           </table>
         </div>
       </div>
 
-      <div id="tab-upload" class="hidden glass-card p-8 max-w-2xl mx-auto">
+      <!-- Upload Tab -->
+      <div id="tab-upload" class="hidden card-fintrack p-8 max-w-2xl mx-auto">
         <h3 class="text-xl font-bold text-slate-800 mb-2 text-center">📤 อัปโหลดไฟล์ CSV เพื่อเพิ่มข้อมูล</h3>
-        <p class="text-sm text-slate-500 text-center mb-6">รองรับไฟล์ CSV ที่มีโครงสร้างคอลัมน์: year, region, province, area, sex, age_group, value</p>
+        <p class="text-sm text-slate-400 text-center mb-6">รองรับไฟล์ CSV ที่มีโครงสร้างคอลัมน์: year, region, province, area, sex, age_group, value</p>
         
-        <div class="border-2 border-dashed border-blue-300 rounded-2xl p-8 text-center bg-blue-50/30 hover:bg-blue-50/60 transition-all cursor-pointer" onclick="document.getElementById('csvFile').click()">
+        <div class="border-2 border-dashed border-purple-300 rounded-2xl p-8 text-center bg-purple-50/20 hover:bg-purple-50/50 transition-all cursor-pointer" onclick="document.getElementById('csvFile').click()">
           <input type="file" id="csvFile" accept=".csv" class="hidden" onchange="handleFileUpload(event)">
           <div class="text-4xl mb-2">📁</div>
           <p class="text-sm font-medium text-slate-700">คลิกที่นี่เพื่อเลือกไฟล์ CSV</p>
@@ -210,49 +324,51 @@
         </div>
       </div>
 
-      <div id="tab-logs" class="hidden glass-card p-6">
+      <!-- Logs Tab -->
+      <div id="tab-logs" class="hidden card-fintrack p-6">
         <div class="flex justify-between items-center mb-6">
           <div>
             <h3 class="text-lg font-bold text-slate-800">📜 ประวัติการใช้งานระบบ (Audit Logs)</h3>
-            <p class="text-xs text-slate-500">บันทึกกิจกรรมการใช้งานและการปรับปรุงข้อมูลในระบบ</p>
+            <p class="text-xs text-slate-400">บันทึกกิจกรรมและการปรับปรุงข้อมูลในระบบ</p>
           </div>
           <button onclick="exportLogsCSV()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-medium shadow transition-all flex items-center gap-1.5">
             📥 Export CSV
           </button>
         </div>
-        <div class="overflow-x-auto rounded-xl border border-slate-200">
+        <div class="overflow-x-auto rounded-xl border border-stone-200">
           <table class="w-full text-left text-sm">
-            <thead class="bg-slate-100 text-slate-700 uppercase text-xs">
+            <thead class="bg-stone-100 text-slate-700 uppercase text-xs">
               <tr>
-                <th class="p-3">เวลา</th>
-                <th class="p-3">ผู้ใช้งาน</th>
-                <th class="p-3">Role</th>
-                <th class="p-3">กิจกรรม</th>
-                <th class="p-3">รายละเอียด</th>
+                <th class="p-3.5">เวลา</th>
+                <th class="p-3.5">ผู้ใช้งาน</th>
+                <th class="p-3.5">Role</th>
+                <th class="p-3.5">กิจกรรม</th>
+                <th class="p-3.5">รายละเอียด</th>
               </tr>
             </thead>
-            <tbody id="logsTableBody" class="divide-y divide-slate-200 bg-white/50"></tbody>
+            <tbody id="logsTableBody" class="divide-y divide-stone-100 bg-white"></tbody>
           </table>
         </div>
       </div>
 
-      <div id="tab-users" class="hidden glass-card p-6">
+      <!-- Users Tab -->
+      <div id="tab-users" class="hidden card-fintrack p-6">
         <div class="flex justify-between items-center mb-6">
           <h3 class="text-lg font-bold text-slate-800">👥 จัดการผู้ใช้งานระบบ</h3>
-          <button onclick="openUserModal()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-medium shadow transition-all">
+          <button onclick="openUserModal()" class="px-4 py-2 btn-fintrack-primary rounded-xl text-sm font-medium transition-all">
             + เพิ่มผู้ใช้
           </button>
         </div>
-        <div class="overflow-x-auto rounded-xl border border-slate-200">
+        <div class="overflow-x-auto rounded-xl border border-stone-200">
           <table class="w-full text-left text-sm">
-            <thead class="bg-slate-100 text-slate-700 uppercase text-xs">
+            <thead class="bg-stone-100 text-slate-700 uppercase text-xs">
               <tr>
-                <th class="p-3">Username</th>
-                <th class="p-3">Role</th>
-                <th class="p-3">จัดการ</th>
+                <th class="p-3.5">Username</th>
+                <th class="p-3.5">Role</th>
+                <th class="p-3.5">จัดการ</th>
               </tr>
             </thead>
-            <tbody id="usersTableBody" class="divide-y divide-slate-200 bg-white/50"></tbody>
+            <tbody id="usersTableBody" class="divide-y divide-stone-100 bg-white"></tbody>
           </table>
         </div>
       </div>
@@ -279,6 +395,16 @@
     let activeFilters = { region: null, sex: null, area: null, age_group: null };
     let auditLogs = [];
     let charts = {};
+
+    // FinTrack Color Palette for Charts
+    const fintrackColors = {
+      purple: '#6C5CE7',
+      emerald: '#2ECC71',
+      coral: '#FF7675',
+      amber: '#FDCB6E',
+      blue: '#0984E3',
+      darkPurple: '#5A4AD1'
+    };
 
     function addLog(action, details) {
       if (!currentUser) return;
@@ -352,9 +478,9 @@
         if (val) {
           hasFilter = true;
           badges.innerHTML += `
-            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-blue-600 text-white text-xs font-medium">
+            <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-purple-600 text-white text-xs font-semibold shadow-sm">
               ${labels[key]}: ${val}
-              <button onclick="removeFilter('${key}')" class="hover:bg-blue-700 rounded-full px-1">✕</button>
+              <button onclick="removeFilter('${key}')" class="hover:bg-purple-800 rounded-full px-1">✕</button>
             </span>
           `;
         }
@@ -404,9 +530,10 @@
       const ctxRegion = document.getElementById('regionChart').getContext('2d');
       charts.region = new Chart(ctxRegion, {
         type: 'bar',
-        data: { labels: [], datasets: [{ label: 'ประชากร', data: [], backgroundColor: '#3b82f6', borderRadius: 8 }] },
+        data: { labels: [], datasets: [{ label: 'ประชากร', data: [], backgroundColor: fintrackColors.purple, borderRadius: 10 }] },
         options: {
           responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
           onClick: (e, elements) => {
             if (elements.length > 0) {
               const idx = elements[0].index;
@@ -421,9 +548,16 @@
       const ctxGender = document.getElementById('genderChart').getContext('2d');
       charts.gender = new Chart(ctxGender, {
         type: 'doughnut',
-        data: { labels: [], datasets: [{ data: [], backgroundColor: ['#6366f1', '#ec4899', '#10b981'] }] },
+        data: { 
+          labels: [], 
+          datasets: [{ 
+            data: [], 
+            backgroundColor: [fintrackColors.purple, fintrackColors.emerald, fintrackColors.amber, fintrackColors.coral] 
+          }] 
+        },
         options: {
           responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { position: 'bottom' } },
           onClick: (e, elements) => {
             if (elements.length > 0) {
               const idx = elements[0].index;
@@ -438,9 +572,10 @@
       const ctxArea = document.getElementById('areaChart').getContext('2d');
       charts.area = new Chart(ctxArea, {
         type: 'bar',
-        data: { labels: [], datasets: [{ label: 'ประชากร', data: [], backgroundColor: '#10b981', borderRadius: 8 }] },
+        data: { labels: [], datasets: [{ label: 'ประชากร', data: [], backgroundColor: fintrackColors.emerald, borderRadius: 8 }] },
         options: {
           indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
           onClick: (e, elements) => {
             if (elements.length > 0) {
               const idx = elements[0].index;
@@ -455,9 +590,10 @@
       const ctxAge = document.getElementById('ageChart').getContext('2d');
       charts.age = new Chart(ctxAge, {
         type: 'line',
-        data: { labels: [], datasets: [{ label: 'ประชากร', data: [], borderColor: '#8b5cf6', backgroundColor: 'rgba(139, 92, 246, 0.1)', fill: true, tension: 0.3 }] },
+        data: { labels: [], datasets: [{ label: 'ประชากร', data: [], borderColor: fintrackColors.purple, backgroundColor: 'rgba(108, 92, 231, 0.12)', fill: true, tension: 0.35, pointRadius: 4 }] },
         options: {
           responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
           onClick: (e, elements) => {
             if (elements.length > 0) {
               const idx = elements[0].index;
@@ -511,17 +647,17 @@
       });
 
       tbody.innerHTML = filtered.map((row, idx) => `
-        <tr class="hover:bg-blue-50/40 transition-all">
-          <td class="p-3 font-medium">${row.year}</td>
-          <td class="p-3">${row.region}</td>
-          <td class="p-3">${row.province}</td>
-          <td class="p-3">${row.area}</td>
-          <td class="p-3">${row.sex}</td>
-          <td class="p-3">${row.age_group}</td>
-          <td class="p-3 font-semibold text-blue-900">${Number(row.value).toLocaleString()}</td>
-          <td class="p-3 action-col">
+        <tr class="hover:bg-purple-50/30 transition-all">
+          <td class="p-3.5 font-medium">${row.year}</td>
+          <td class="p-3.5">${row.region}</td>
+          <td class="p-3.5">${row.province}</td>
+          <td class="p-3.5">${row.area}</td>
+          <td class="p-3.5">${row.sex}</td>
+          <td class="p-3.5">${row.age_group}</td>
+          <td class="p-3.5 font-semibold text-purple-900">${Number(row.value).toLocaleString()}</td>
+          <td class="p-3.5 action-col">
             ${isEditable ? `
-              <button onclick="deleteRow(${idx})" class="text-xs text-red-600 hover:bg-red-50 px-2 py-1 rounded transition-all">ลบ</button>
+              <button onclick="deleteRow(${idx})" class="text-xs text-rose-600 hover:bg-rose-50 px-2.5 py-1 rounded-md transition-all font-medium">ลบ</button>
             ` : '-'}
           </td>
         </tr>
@@ -562,12 +698,12 @@
       const tbody = document.getElementById('logsTableBody');
       if (!tbody) return;
       tbody.innerHTML = auditLogs.map(l => `
-        <tr class="hover:bg-slate-50">
-          <td class="p-3 text-xs text-slate-500">${l.time}</td>
-          <td class="p-3 font-semibold text-slate-800">${l.user}</td>
-          <td class="p-3"><span class="text-xs px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 font-medium">${l.role}</span></td>
-          <td class="p-3 font-medium text-blue-600">${l.action}</td>
-          <td class="p-3 text-slate-600">${l.details}</td>
+        <tr class="hover:bg-stone-50">
+          <td class="p-3.5 text-xs text-slate-400">${l.time}</td>
+          <td class="p-3.5 font-semibold text-slate-800">${l.user}</td>
+          <td class="p-3.5"><span class="text-xs px-2.5 py-0.5 rounded-full bg-stone-100 text-slate-700 font-medium">${l.role}</span></td>
+          <td class="p-3.5 font-medium text-purple-600">${l.action}</td>
+          <td class="p-3.5 text-slate-600">${l.details}</td>
         </tr>
       `).join('');
     }
@@ -592,10 +728,10 @@
       if (!tbody) return;
       tbody.innerHTML = dbUsers.map((u, i) => `
         <tr>
-          <td class="p-3 font-medium">${u.username}</td>
-          <td class="p-3"><span class="px-2.5 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800 uppercase">${u.role}</span></td>
-          <td class="p-3">
-            ${u.username !== 'admin' ? `<button onclick="deleteUser(${i})" class="text-xs text-red-600 hover:bg-red-50 px-2 py-1 rounded">ลบ</button>` : '-'}
+          <td class="p-3.5 font-medium">${u.username}</td>
+          <td class="p-3.5"><span class="px-2.5 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800 uppercase">${u.role}</span></td>
+          <td class="p-3.5">
+            ${u.username !== 'admin' ? `<button onclick="deleteUser(${i})" class="text-xs text-rose-600 hover:bg-rose-50 px-2.5 py-1 rounded-md font-medium">ลบ</button>` : '-'}
           </td>
         </tr>
       `).join('');
@@ -615,7 +751,7 @@
         const nav = document.getElementById(`nav-${t}`);
         if (el) el.classList.add('hidden');
         if (nav) {
-          nav.classList.remove('bg-blue-600', 'text-white', 'shadow-md');
+          nav.classList.remove('sidebar-active');
           nav.classList.add('text-slate-600');
         }
       });
@@ -624,7 +760,7 @@
       const targetNav = document.getElementById(`nav-${tabId}`);
       if (targetTab) targetTab.classList.remove('hidden');
       if (targetNav) {
-        targetNav.classList.add('bg-blue-600', 'text-white', 'shadow-md');
+        targetNav.classList.add('sidebar-active');
         targetNav.classList.remove('text-slate-600');
       }
     }
